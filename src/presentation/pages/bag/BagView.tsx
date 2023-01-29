@@ -1,30 +1,48 @@
 import styles from './BagView.module.css';
-import { useStore } from '../../../store/store';
 import { BagItemCard } from './components/BagItemCard';
-import { useState } from 'react';
+import { useBag } from '../../hooks/useBag';
+import { useToast } from '../../hooks/useToast';
 
 export const BagView = () => {
-    const [total, setTotal] = useState(0.0);
-    const { isModalOpen, bag, closeModal } = useStore((state) => state);
+    const {
+        bag,
+        total,
+        isModalOpen,
+        closeModal,
+        handleIncreaseItemQuantity,
+        handleDecreaseItemQuantity,
+        handleDeleteItemFromBag,
+        startSendOrder
+    } = useBag();
+
+    const { showToastPromise } = useToast();
+
+    async function handleClickSendOrder() {
+        showToastPromise(startSendOrder(), 'Generando orden...', 'Orden generada 👌');
+    }
 
     if (bag.length === 0)
         return (
             <div className={`${styles.bag} ${isModalOpen ? styles.open : ''} flex flex-col`}>
                 <div className="relative">
-                <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    fill="none"
-                    viewBox="0 0 24 24"
-                    strokeWidth={1.5}
-                    stroke="currentColor"
-                    className="w-6 h-6 absolute m-4 cursor-pointer"
-                    onClick={closeModal}
-                >
-                    <path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" />
-                </svg>
+                    <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        fill="none"
+                        viewBox="0 0 24 24"
+                        strokeWidth={1.5}
+                        stroke="currentColor"
+                        className="w-6 h-6 absolute m-4 cursor-pointer"
+                        onClick={closeModal}
+                    >
+                        <path
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                            d="M6 18L18 6M6 6l12 12"
+                        />
+                    </svg>
 
-                <h2 className="text-center my-4 uppercase">No tienes items agregados</h2>
-            </div>
+                    <h2 className="text-center my-4 uppercase">No tienes items agregados</h2>
+                </div>
                 <div className="flex-1 flex justify-center items-center">
                     <svg
                         xmlns="http://www.w3.org/2000/svg"
@@ -61,12 +79,21 @@ export const BagView = () => {
             </div>
             <ul className="flex-1 overflow-y-auto">
                 {bag.map((item) => (
-                    <BagItemCard key={item.book.id} item={item} />
+                    <BagItemCard
+                        key={item.book.id}
+                        item={item}
+                        onClickIncrease={() => handleIncreaseItemQuantity(item)}
+                        onClickDecrease={() => handleDecreaseItemQuantity(item)}
+                        onClickDelete={() => handleDeleteItemFromBag(item.book.id)}
+                    />
                 ))}
             </ul>
             <div className="m-4">
                 <p className="text-xl mb-2">Total: S/{total}</p>
-                <button className="uppercase w-full text-xs bg-primary text-white h-10">
+                <button
+                    onClick={handleClickSendOrder}
+                    className="uppercase w-full text-xs bg-primary text-white h-10"
+                >
                     Realizar pedido
                 </button>
             </div>

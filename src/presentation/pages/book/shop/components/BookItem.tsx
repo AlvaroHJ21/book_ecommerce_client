@@ -16,10 +16,12 @@ export const BookItem = ({ book }: Props) => {
     
     return (
         <li onClick={handleClick} className={`${styles.item} item w-60 border-[1px] p-1 relative`}>
-            <div className={`${styles.discount} absolute top-0 right-0 p-2 bg-white z-10`}>
-                <p>15% Off</p>
-            </div>
-            <div className='overflow-hidden'>
+            {book.discount ? (
+                <div className={`${styles.discount} absolute top-0 right-0 p-2 bg-white z-10`}>
+                    <p>{book.discount}% Off</p>
+                </div>
+            ) : null}
+            <div className="overflow-hidden">
                 <img
                     className={`${styles.img} w-full aspect-square object-cover`}
                     src="http://unblast.com/wp-content/uploads/2020/05/Square-Book-Mockup-2.jpg"
@@ -29,10 +31,26 @@ export const BookItem = ({ book }: Props) => {
 
             <div className="p-1 py-4">
                 <div className="flex justify-between">
-                    <p className="font-bold">{book.title}</p>
-                    <p className="text-primary">${book.price}</p>
+                    <div>
+                        <p className="font-bold">{book.title}</p>
+                        <p className="font-light">
+                            {book.authors.map((author) => author).join(', ')}
+                        </p>
+                    </div>
+
+                    {book.discount ? (
+                        <div className="flex flex-col items-end">
+                            <p className="text-gray-500 line-through">${book.price}</p>
+                            <p className="text-primary text-lg">
+                                ${book.price * ((100 - book.discount) / 100)}
+                            </p>
+                        </div>
+                    ) : (
+                        <div className="flex flex-col">
+                            <p className="text-primary text-lg">${book.price}</p>
+                        </div>
+                    )}
                 </div>
-                <p className="font-light">{book.authors.map((author) => author).join(', ')}</p>
             </div>
         </li>
     );

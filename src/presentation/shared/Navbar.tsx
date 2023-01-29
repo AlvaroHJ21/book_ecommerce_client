@@ -9,9 +9,11 @@ export const Navbar = () => {
     const { bag, toggleModal } = useStore((state) => state);
 
     return (
-        <nav className="bg-secondary min-h-[64px]">
+        <nav className="bg-secondary min-h-[64px] z-20">
             <div className={`${container} h-full flex justify-between items-center`}>
-                <img src={imgLogo} alt="" />
+                <Link to={'/'}>
+                    <img src={imgLogo} alt="" />
+                </Link>
                 <ul className="flex gap-4">
                     <li className="border-b-2 border-b-secondary hover:border-primary">
                         <Link className="py-2 px-4" to={'/'}>

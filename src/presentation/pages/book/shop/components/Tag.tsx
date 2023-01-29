@@ -1,4 +1,4 @@
-import { Category } from '../../../../../domain/models/Category';
+import Category from '../../../../../domain/models/Category';
 interface Props {
     category: Category;
     onDelete: () => void;

@@ -1,72 +1,26 @@
-import { BookItem } from './components/BookItem';
-import { useBooks } from '../../../hooks/useBooks';
-import LocalBookRepository from '../../../../data/local/LocalBookRepository';
 import { useState } from 'react';
+
+import Category from '../../../../domain/models/Category';
+import LocalBookRepository from '../../../../data/local/LocalBookRepository';
+import LocalCategoryRepository from '../../../../data/local/LocalCategoryRepository';
+
+import { useBooks } from '../../../hooks/useBooks';
+import { useCategories } from '../../../hooks/useCategories';
+
+import { BookItem } from './components/BookItem';
 import { Tag } from './components/Tag';
-import { Category } from '../../../../domain/models/Category';
 
-const categories: Category[] = [
-    {
-        id: 1,
-        title: 'Adventure',
-    },
-
-    {
-        id: 2,
-        title: 'Biography',
-    },
-    {
-        id: 3,
-        title: 'Classic',
-    },
-    {
-        id: 4,
-        title: 'Random Selection',
-    },
-    {
-        id: 5,
-        title: 'Harvard Classics',
-    },
-    {
-        id: 6,
-        title: 'Designing Book',
-    },
-    {
-        id: 7,
-        title: 'Philosophy',
-    },
-    {
-        id: 8,
-        title: 'Science Fiction',
-    },
-    {
-        id: 9,
-        title: 'Short Store Collection',
-    },
-    {
-        id: 10,
-        title: 'Thriller',
-    },
-    {
-        id: 11,
-        title: 'Travel',
-    },
-    {
-        id: 12,
-        title: 'Westerm',
-    },
-    {
-        id: 13,
-        title: 'History',
-    },
-];
 
 function ShopView() {
+
+    const { categories } = useCategories(new LocalCategoryRepository());
+
     const [selectedCategories, setSelectedCategories] = useState<Category[]>([]);
 
     const { books } = useBooks(new LocalBookRepository());
-
+    
     function handleClickCategory(category: Category) {
+        if (selectedCategories.find((c) => c.id === category.id)) return; 
         setSelectedCategories([...selectedCategories, category]);
     }
 

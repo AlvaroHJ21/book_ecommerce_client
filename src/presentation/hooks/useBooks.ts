@@ -1,6 +1,7 @@
-import { BookRepository } from '../../domain/repositories/BookRepository';
-import Book from '../../domain/models/Book';
 import { useEffect, useState } from 'react';
+
+import Book from '../../domain/models/Book';
+import BookRepository from '../../domain/repositories/BookRepository';
 
 export const useBooks = (repository: BookRepository) => {
     const [books, setBooks] = useState<Book[]>([]);
@@ -20,6 +21,7 @@ export const useBooks = (repository: BookRepository) => {
             return book;
         } catch (error: any) {
             console.log(error.message);
+            throw new Error(error);
         }
     }
 

@@ -1,12 +1,14 @@
 .bag{
-    position: absolute;
+    position: fixed;
     top: 0;
     right: -24rem;  
-    z-index: 99;
+    z-index: 10;
     width: 24rem;
-    height: 100%;
+    height: calc(100vh - 64px);/***Por el navbar***/
     background-color: #fff;
     transition: right .3s ease;
+    box-shadow: -1px 0px 10px rgba(0, 0, 0, .1);
+    top: 64px;/***Por el navbar***/
 }
 
 .bag.open {

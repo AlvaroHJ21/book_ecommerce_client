@@ -1,25 +1,34 @@
 import { useState, useEffect } from 'react';
-import { useParams } from 'react-router-dom';
+import { useParams, useNavigate } from 'react-router-dom';
 import { useBooks } from '../../../hooks/useBooks';
 import LocalBookRepository from '../../../../data/local/LocalBookRepository';
 import Book from '../../../../domain/models/Book';
 import { useStore } from '../../../../store/store';
+import { useToast } from '../../../hooks/useToast';
 
 export const useBookDetailPage = () => {
+
+    const { showToast } = useToast();
+
     const [book, setBook] = useState<Book>();
 
     const [quantity, setQuantity] = useState(1);
 
     const { id } = useParams();
 
+    const navigate = useNavigate();
+
     const { getProduct } = useBooks(new LocalBookRepository());
 
-    const addToBag = useStore((state) => state.addToBag);
-
     useEffect(() => {
-        // console.log(id);
-        if (id) getProduct(+id).then((book) => setBook(book));
+        if (id) getProduct(+id).then((book) => setBook(book)).catch(()=>{
+            //Not found
+            console.log('Not found');
+            navigate('/not-found');
+        });
     }, []);
+
+    const { bag, addToBag, updateItem: uppdateBag } = useStore((state) => state);
 
     function increaseQuantity() {
         setQuantity(quantity + 1);
@@ -29,15 +38,18 @@ export const useBookDetailPage = () => {
         setQuantity(quantity - 1);
     }
 
-    function handleAddToBag() {
+    function handleClickAddToBag() {
         if (!book) return;
-        // console.log('add');
-        // console.log(book);
-        // console.log(quantity);
-        addToBag({
-            book,
-            quantity,
-        });
+        if (bag.find((b) => b.book.id === book.id)) {
+            uppdateBag(book.id, quantity);
+            showToast('Cantidad actualizada')
+        } else {
+            addToBag({
+                book,
+                quantity,
+            });
+            showToast('Libro agregado a la bolsa')
+        }
     }
-    return { book,  quantity, increaseQuantity, decreaseQuantity, handleAddToBag };
+    return { book, quantity, increaseQuantity, decreaseQuantity, handleClickAddToBag };
 };
