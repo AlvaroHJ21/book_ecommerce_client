@@ -1,0 +1,21 @@
+.item {
+    cursor: pointer;
+    transition: transform .3s ease;
+}
+
+.img{
+    transition: transform .3s ease;
+}
+
+.item:hover .img{
+    transform: scale(1.4);
+}
+
+.discount{
+    transform-origin: right;
+    transition: transform .3s ease;
+}
+
+.item:hover .discount{
+    transform: scale(0.8);
+}

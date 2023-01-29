@@ -1,0 +1,15 @@
+.bag{
+    position: absolute;
+    top: 0;
+    right: -24rem;  
+    z-index: 99;
+    width: 24rem;
+    height: 100%;
+    background-color: #fff;
+    transition: right .3s ease;
+}
+
+.bag.open {
+    right: 0rem;
+}
+
