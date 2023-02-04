@@ -1,38 +1,78 @@
-import { Link } from 'react-router-dom';
+import { Link, useLocation } from 'react-router-dom';
 
 import { imgLogo } from '../../assets';
 import { container } from '../utils';
 import { useStore } from '../../store/store';
+import { navLinks } from '../routes/navlinks';
+import { useEffect, useState } from 'react';
 
 export const Navbar = () => {
+    const { bag, toggleModal, isAuthenticated } = useStore((state) => state);
 
-    const { bag, toggleModal } = useStore((state) => state);
+    const location = useLocation();
+
+    const [navbarLinks, setNavbarLinks] = useState(navLinks);
+
+    useEffect(() => {
+        if (isAuthenticated) {
+            console.log('Agregando nuevos links');
+            setNavbarLinks([
+                ...navbarLinks,
+                {
+                    to: '/my-books',
+                    name: 'Mis Libros',
+                    component: <h1>A</h1>,
+                },
+                {
+                    to: '/my-profile',
+                    name: 'Mis Perfil',
+                    component: <h1>A</h1>,
+                },
+            ]);
+        }
+    }, [isAuthenticated]);
 
     return (
         <nav className="bg-secondary min-h-[64px] z-20">
             <div className={`${container} h-full flex justify-between items-center`}>
+                <div className="sm:hidden">
+                    <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        fill="none"
+                        viewBox="0 0 24 24"
+                        strokeWidth={1.5}
+                        stroke="currentColor"
+                        className="w-6 h-6"
+                    >
+                        <path
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                            d="M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25h16.5"
+                        />
+                    </svg>
+                </div>
                 <Link to={'/'}>
                     <img src={imgLogo} alt="" />
                 </Link>
-                <ul className="flex gap-4">
-                    <li className="border-b-2 border-b-secondary hover:border-primary">
-                        <Link className="py-2 px-4" to={'/'}>
-                            Home
-                        </Link>
-                    </li>
-                    <li className="border-b-2 border-b-secondary hover:border-primary">
-                        <Link className="py-2 px-4" to={'/shop'}>
-                            Books
-                        </Link>
-                    </li>
-                    <li className="border-b-2 border-b-secondary hover:border-primary">
-                        <Link className="py-2 px-4" to={'/blog'}>
-                            Blog
-                        </Link>
-                    </li>
+                <ul className="gap-4 hidden px-4 sm:flex sm:flex-1">
+                    {navbarLinks.map((navLink, index) => (
+                        <li
+                            key={index}
+                            className={`border-b-2 hover:border-primary ${
+                                location.pathname === navLink.to
+                                    ? 'border-b-primary'
+                                    : 'border-b-secondary'
+                            }`}
+                        >
+                            <Link className="py-2 px-4" to={navLink.to}>
+                                {navLink.name}
+                            </Link>
+                        </li>
+                    ))}
                 </ul>
-                <div className="flex gap-8">
-                    <div className="relative cursor-pointer" onClick={toggleModal}>
+
+                <div className="flex items-center">
+                    <div className="relative cursor-pointer mr-4" onClick={toggleModal}>
                         <svg
                             xmlns="http://www.w3.org/2000/svg"
                             fill="none"
@@ -51,23 +91,18 @@ export const Navbar = () => {
                             {bag.length}
                         </div>
                     </div>
-
-                    <div>
-                        <svg
-                            xmlns="http://www.w3.org/2000/svg"
-                            fill="none"
-                            viewBox="0 0 24 24"
-                            strokeWidth={1.5}
-                            stroke="currentColor"
-                            className="w-6 h-6"
-                        >
-                            <path
-                                strokeLinecap="round"
-                                strokeLinejoin="round"
-                                d="M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25h16.5"
-                            />
-                        </svg>
-                    </div>
+                    <ul className={`sm:space-x-2 ${isAuthenticated ? 'hidden' : 'hidden sm:flex'}`}>
+                        <li className={`border-2 border-primary text-primary`}>
+                            <Link className="py-2 px-4 inline-block" to="/auth/login">
+                                Login
+                            </Link>
+                        </li>
+                        <li className={`bg-primary text-white`}>
+                            <Link className="py-2 px-4 inline-block" to="/auth/register">
+                                Register
+                            </Link>
+                        </li>
+                    </ul>
                 </div>
             </div>
         </nav>

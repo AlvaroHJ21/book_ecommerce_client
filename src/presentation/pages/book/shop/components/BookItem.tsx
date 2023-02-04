@@ -15,7 +15,7 @@ export const BookItem = ({ book }: Props) => {
     }
     
     return (
-        <li onClick={handleClick} className={`${styles.item} item w-60 border-[1px] p-1 relative`}>
+        <li onClick={handleClick} className={`${styles.item} item md:w-60 border-[1px] p-1 relative`}>
             {book.discount ? (
                 <div className={`${styles.discount} absolute top-0 right-0 p-2 bg-white z-10`}>
                     <p>{book.discount}% Off</p>

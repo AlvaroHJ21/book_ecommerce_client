@@ -29,8 +29,8 @@ function ShopView() {
     }
 
     return (
-        <div className="container m-auto flex flex-1">
-            <div className="w-1/6 border-r-secondary border-r-2 p-8">
+        <div className="container m-auto flex flex-1 justify-center">
+            <div className="w-1/6 border-r-secondary border-r-2 p-8 hidden md:block">
                 <ul className="flex flex-col gap-4">
                     {categories.map((category, index) => (
                         <li
@@ -96,7 +96,7 @@ function ShopView() {
 
                 {/* FIN APP BAR */}
 
-                <ul className="flex flex-wrap justify-center gap-8 p-8">
+                <ul className="flex flex-wrap justify-center gap-8 py-8 px-0">
                     {books.map((book) => (
                         <BookItem key={book.id} book={book} />
                     ))}

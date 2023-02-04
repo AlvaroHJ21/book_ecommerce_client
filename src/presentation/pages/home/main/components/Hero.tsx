@@ -4,7 +4,7 @@ import { container } from "../../../../utils";
 export const Hero = () => {
   return (
       <div className="py-20 bg-secondary relative">
-          <div className={`${container} flex items-center gap-4`}>
+          <div className={`${container} flex items-center gap-4 flex-col md:flex-row`}>
               <div className="flex-1 space-y-6">
                   <h1 className="text-6xl">Buy and sell your textbooks for the best price</h1>
                   <p className="max-w-[70%]">

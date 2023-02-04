@@ -13,6 +13,11 @@ interface StoreState {
     openModal: () => void;
     closeModal: () => void;
     toggleModal: () => void;
+
+    //auth
+    isAuthenticated: boolean;
+    login: () => void;
+    logout: () => void;
 }
 
 export const useStore = create<StoreState>()(
@@ -52,7 +57,10 @@ export const useStore = create<StoreState>()(
             set((state: StoreState) => ({
                 isModalOpen: !state.isModalOpen,
             })),
-        // increasePopulation: () => set((state: any) => ({ bears: state.bears + 1 })),
-        // removeAllBears: () => set({ bears: 0 }),
+        //auth
+
+        isAuthenticated: false,
+        login: () => set({ isAuthenticated: true }),
+        logout: () => set({ isAuthenticated: false }),
     }))
 );

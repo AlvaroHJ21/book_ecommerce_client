@@ -7,7 +7,7 @@ export const BookDetailsPage = () => {
         useBookDetailPage();
 
     return (
-        <div className="container max-w-4xl m-auto mt-8 flex">
+        <div className="container max-w-4xl m-auto mt-8 flex flex-col md:flex-row">
             <div className="flex-1">
                 <img src={book?.image} alt="imagen del libro" className="h-full object-cover" />
             </div>
